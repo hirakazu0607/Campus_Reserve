@@ -22,6 +22,8 @@ development:
 test:
   <<: *default
   database: campus_reserve_test
+  # テスト環境では開発用パスワードをフォールバックとして使用
+  password: <%= ENV["DATABASE_PASSWORD"] || "heisei160607" %>
 
 
 # Store production database in the storage/ directory, which by default
