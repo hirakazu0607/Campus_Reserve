@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
     if @user.save
       # 成功した場合、flashメッセージを表示してホームに戻る
-      flash[:success] = "✅ ユーザー登録が完了しました！ 登録情報: #{@user.name} (#{@user.email})"
+      flash[:success] = "✅ ユーザー登録が完了しました！"
       redirect_to root_path
     else
       # 失敗した場合、フォームを再表示

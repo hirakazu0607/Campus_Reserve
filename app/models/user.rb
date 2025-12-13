@@ -21,8 +21,9 @@ class User < ApplicationRecord
                     length: { maximum: 255 },
                     format: { with: URI::MailTo::EMAIL_REGEXP }
 
-  # パスワードは6文字以上
-  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+  # パスワードは6文字以上（作成時は必須、更新時は変更する場合のみ）
+  validates :password, presence: true, on: :create
+  validates :password, length: { minimum: 6 }, allow_nil: true
 
   # ロールは必須
   validates :role, presence: true

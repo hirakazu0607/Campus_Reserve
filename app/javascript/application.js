@@ -11,30 +11,13 @@ window.bootstrap = bootstrap
 
 // ページ読み込み後の処理
 document.addEventListener('turbo:load', () => {
-  // flashメッセージの閉じるボタン
-  const closeButtons = document.querySelectorAll('[data-bs-dismiss="alert"]')
-  closeButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-      const alert = e.target.closest('.alert')
-      if (alert) {
-        alert.style.transition = 'opacity 0.3s'
-        alert.style.opacity = '0'
-        setTimeout(() => {
-          alert.remove()
-        }, 300)
-      }
-    })
-  })
-  
-  // 5秒後に自動で消す
+  // flashメッセージを5秒後に自動で消す
   const alerts = document.querySelectorAll('.alert')
   alerts.forEach(alert => {
     setTimeout(() => {
-      alert.style.transition = 'opacity 0.3s'
-      alert.style.opacity = '0'
-      setTimeout(() => {
-        alert.remove()
-      }, 300)
+      // Bootstrap の Alert インスタンスを取得して閉じる
+      const bsAlert = bootstrap.Alert.getOrCreateInstance(alert)
+      bsAlert.close()
     }, 5000)
   })
 })

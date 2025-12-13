@@ -16,10 +16,16 @@ RSpec.describe User, type: :model do
 
   # ✅ バリデーションのテスト
   describe 'validations' do
-    it '学籍番号・社員番号が必須であること' do
+    it '氏名が必須であること' do
       user = build(:user, name: nil)
       expect(user).not_to be_valid
       expect(user.errors[:name]).to include("can't be blank")
+    end
+
+    it '学籍番号・社員番号が必須であること' do
+      user = build(:user, student_or_staff_number: nil)
+      expect(user).not_to be_valid
+      expect(user.errors[:student_or_staff_number]).to include("can't be blank")
     end
 
     it '学籍番号・社員番号が一意であること' do
@@ -51,10 +57,18 @@ RSpec.describe User, type: :model do
     end
 
     it '正しい形式のメールアドレスのみ許可すること' do
+      # 無効なメールアドレス
       invalid_emails = [ 'user@', '@example.com', 'user.example.com' ]
       invalid_emails.each do |invalid_email|
         user = build(:user, email: invalid_email)
         expect(user).not_to be_valid
+      end
+
+      # 有効なメールアドレス
+      valid_emails = [ 'user@example.com', 'test.user@example.co.jp', 'user+tag@example.com' ]
+      valid_emails.each do |valid_email|
+        user = build(:user, email: valid_email)
+        expect(user).to be_valid
       end
     end
 

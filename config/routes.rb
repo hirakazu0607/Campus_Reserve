@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get "static_pages/index"
+
   # ヘルスチェック用（本番環境で使用）
   get "up" => "rails/health#show", as: :rails_health_check
 
