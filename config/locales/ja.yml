@@ -1,0 +1,93 @@
+ja:
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M:%S"
+      long: "%Y年%m月%d日 %H時%M分"
+      short: "%m/%d %H:%M"
+  date:
+    formats:
+      default: "%Y/%m/%d"
+      long: "%Y年%m月%d日"
+      short: "%m/%d"
+  activerecord:
+    models:
+      facility: "施設"
+      reservation: "予約"
+    attributes:
+      facility:
+        name: "施設名"
+        description: "説明"
+        capacity: "収容人数"
+        available: "利用可能"
+      reservation:
+        facility: "施設"
+        user_name: "予約者名"
+        user_email: "メールアドレス"
+        start_time: "開始時刻"
+        end_time: "終了時刻"
+        purpose: "利用目的"
+        status: "ステータス"
+    errors:
+      models:
+        reservation:
+          attributes:
+            end_time:
+              after_start_time: "終了時刻は開始時刻より後である必要があります"
+            base:
+              overlapping: "選択した時間帯は既に予約されています"
+  helpers:
+    submit:
+      create: "登録する"
+      update: "更新する"
+      facility:
+        create: "施設を登録"
+        update: "施設を更新"
+      reservation:
+        create: "予約を登録"
+        update: "予約を更新"
+    label:
+      facility:
+        name: "施設名"
+        description: "説明"
+        capacity: "収容人数"
+        available: "利用可能"
+      reservation:
+        facility_id: "施設"
+        user_name: "予約者名"
+        user_email: "メールアドレス"
+        start_time: "開始時刻"
+        end_time: "終了時刻"
+        purpose: "利用目的"
+        status: "ステータス"
+  facilities:
+    index:
+      title: "施設一覧"
+      new: "新規施設登録"
+    show:
+      title: "施設詳細"
+      edit: "編集"
+      back: "一覧に戻る"
+      destroy: "削除"
+      confirm: "本当に削除しますか？"
+    new:
+      title: "新規施設登録"
+    edit:
+      title: "施設編集"
+  reservations:
+    index:
+      title: "予約一覧"
+      new: "新規予約登録"
+    show:
+      title: "予約詳細"
+      edit: "編集"
+      back: "一覧に戻る"
+      destroy: "キャンセル"
+      confirm: "本当にキャンセルしますか？"
+    new:
+      title: "新規予約登録"
+    edit:
+      title: "予約編集"
+    status:
+      pending: "承認待ち"
+      confirmed: "確定"
+      cancelled: "キャンセル"

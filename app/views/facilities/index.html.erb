@@ -1,0 +1,30 @@
+<% content_for :title, "施設一覧 - Campus Reserve" %>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+  <h1>施設一覧</h1>
+  <%= link_to "新規施設登録", new_facility_path, style: "background-color: #3498db; color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 4px;" %>
+</div>
+
+<div id="facilities" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+  <% @facilities.each do |facility| %>
+    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+      <h3 style="margin-top: 0; color: #2c3e50;"><%= facility.name %></h3>
+      <p style="color: #7f8c8d; margin: 0.5rem 0;"><%= truncate(facility.description, length: 100) %></p>
+      <div style="margin: 1rem 0;">
+        <span style="background-color: #ecf0f1; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem; margin-right: 0.5rem;">
+          👥 定員: <%= facility.capacity %>名
+        </span>
+        <% if facility.available %>
+          <span style="background-color: #d4edda; color: #155724; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem;">
+            ✓ 利用可能
+          </span>
+        <% else %>
+          <span style="background-color: #f8d7da; color: #721c24; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem;">
+            ✗ 利用不可
+          </span>
+        <% end %>
+      </div>
+      <%= link_to "詳細を見る", facility, style: "color: #3498db; text-decoration: none; font-weight: bold;" %>
+    </div>
+  <% end %>
+</div>

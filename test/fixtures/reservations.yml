@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  facility: one
+  user_name: Test User One
+  user_email: test1@example.com
+  start_time: <%= 1.day.from_now.change(hour: 10, min: 0) %>
+  end_time: <%= 1.day.from_now.change(hour: 12, min: 0) %>
+  purpose: Test Purpose One
+  status: confirmed
+
+two:
+  facility: two
+  user_name: Test User Two
+  user_email: test2@example.com
+  start_time: <%= 2.days.from_now.change(hour: 14, min: 0) %>
+  end_time: <%= 2.days.from_now.change(hour: 16, min: 0) %>
+  purpose: Test Purpose Two
+  status: pending
