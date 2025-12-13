@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   # ヘルスチェック用（本番環境で使用）
   get "up" => "rails/health#show", as: :rails_health_check
 
