@@ -1,0 +1,36 @@
+<% provide(:title, "ユーザー登録")  %>
+<h1>ユーザー登録</h1>
+<%= render 'shared/error_messages', object: @user %>
+<%= form_with(model: @user) do |f| %>
+  <div class="field">
+    <%= f.label :name, "氏名" %>
+    <%= f.text_field :name, placeholder: "山田 太郎" %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :student_or_staff_number, "学籍番号 / 社員番号" %>
+    <%= f.number_field :student_or_staff_number, placeholder: "123456" %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :email, "メールアドレス" %>
+    <%= f.email_field :email, placeholder: "example@campus.ac.jp" %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :password, "パスワード（6文字以上）" %>
+    <%= f.password_field :password %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :password_confirmation, "パスワード（確認）" %>
+    <%= f.password_field :password_confirmation %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :role, "役割" %>
+    <%= f.select :role, [['学生', 'student'], ['教職員', 'staff']], {}, { class: "form-control" } %>
+  </div>
+
+  <%= f.submit "登録", class: "btn btn-primary" %>
+<% end %>
