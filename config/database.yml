@@ -5,20 +5,23 @@
 #   gem "sqlite3"
 #
 default: &default
-  adapter: sqlite3
-  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
+  adapter: mysql2
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: root            # ★ WSLで設定したMySQLのユーザー名（通常はroot）
+  password: heisei160607 # ★ WSLで設定したMySQLのrootパスワード
+  host: 127.0.0.1           # ローカルホスト（WSL内）
+  port: 3306
 
 development:
   <<: *default
-  database: storage/development.sqlite3
+  database: campus_reserve_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: storage/test.sqlite3
+  database: campus_reserve_test
 
 
 # Store production database in the storage/ directory, which by default
