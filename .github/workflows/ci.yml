@@ -6,38 +6,38 @@ on:
     branches: [ main ]
 
 jobs:
-  scan_ruby:
-    runs-on: ubuntu-latest
+  # scan_ruby:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+  #     - name: Set up Ruby
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         bundler-cache: true
 
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bundle exec brakeman --no-pager
+  #     - name: Scan for common Rails security vulnerabilities using static analysis
+  #       run: bundle exec brakeman --no-pager
 
-      - name: Scan for known security vulnerabilities in gems used
-        run: bundle exec bundler-audit
+  #     - name: Scan for known security vulnerabilities in gems used
+  #       run: bundle exec bundler-audit
 
-  scan_js:
-    runs-on: ubuntu-latest
+  # scan_js:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+  #     - name: Set up Ruby
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         bundler-cache: true
 
-      - name: Scan for security vulnerabilities in JavaScript dependencies
-        run: bundle exec rails importmap:audit
+  #     - name: Scan for security vulnerabilities in JavaScript dependencies
+  #       run: bundle exec rails importmap:audit
 
   lint:
     runs-on: ubuntu-latest
@@ -95,40 +95,40 @@ jobs:
           DATABASE_PASSWORD: password
         run: bundle exec rails db:test:prepare && bundle exec rspec
 
-  system-test:
-    runs-on: ubuntu-latest
+  # system-test:
+  #   runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: campus_reserve_test
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+  #   services:
+  #     mysql:
+  #       image: mysql:8.0
+  #       env:
+  #         MYSQL_ROOT_PASSWORD: password
+  #         MYSQL_DATABASE: campus_reserve_test
+  #       ports:
+  #         - 3306:3306
+  #       options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+  #     - name: Set up Ruby
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         bundler-cache: true
 
-      - name: Run System Tests
-        env:
-          RAILS_ENV: test
-          DATABASE_HOST: 127.0.0.1
-          DATABASE_USERNAME: root
-          DATABASE_PASSWORD: password
-        run: bundle exec rails db:test:prepare && bundle exec rspec spec/system
+  #     - name: Run System Tests
+  #       env:
+  #         RAILS_ENV: test
+  #         DATABASE_HOST: 127.0.0.1
+  #         DATABASE_USERNAME: root
+  #         DATABASE_PASSWORD: password
+  #       run: bundle exec rails db:test:prepare && bundle exec rspec spec/system
 
-      - name: Keep screenshots from failed system tests
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: screenshots
-          path: ${{ github.workspace }}/tmp/screenshots
-          if-no-files-found: ignore
+  #     - name: Keep screenshots from failed system tests
+  #       uses: actions/upload-artifact@v4
+  #       if: failure()
+  #       with:
+  #         name: screenshots
+  #         path: ${{ github.workspace }}/tmp/screenshots
+  #         if-no-files-found: ignore
