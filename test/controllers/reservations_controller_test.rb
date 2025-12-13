@@ -17,7 +17,15 @@ class ReservationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create reservation" do
     assert_difference("Reservation.count") do
-      post reservations_url, params: { reservation: { end_time: @reservation.end_time, facility_id: @reservation.facility_id, purpose: @reservation.purpose, start_time: @reservation.start_time, status: @reservation.status, user_email: @reservation.user_email, user_name: @reservation.user_name } }
+      post reservations_url, params: { reservation: { 
+        end_time: 5.days.from_now.change(hour: 18, min: 0), 
+        facility_id: @reservation.facility_id, 
+        purpose: "Test Purpose", 
+        start_time: 5.days.from_now.change(hour: 16, min: 0), 
+        status: "pending", 
+        user_email: "newtest@example.com", 
+        user_name: "New Test User" 
+      } }
     end
 
     assert_redirected_to reservation_url(Reservation.last)
@@ -34,7 +42,15 @@ class ReservationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update reservation" do
-    patch reservation_url(@reservation), params: { reservation: { end_time: @reservation.end_time, facility_id: @reservation.facility_id, purpose: @reservation.purpose, start_time: @reservation.start_time, status: @reservation.status, user_email: @reservation.user_email, user_name: @reservation.user_name } }
+    patch reservation_url(@reservation), params: { reservation: { 
+      end_time: @reservation.end_time, 
+      facility_id: @reservation.facility_id, 
+      purpose: "Updated Purpose", 
+      start_time: @reservation.start_time, 
+      status: @reservation.status, 
+      user_email: @reservation.user_email, 
+      user_name: @reservation.user_name 
+    } }
     assert_redirected_to reservation_url(@reservation)
   end
 
