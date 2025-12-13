@@ -1,0 +1,63 @@
+<% content_for :title, "予約詳細 - Campus Reserve" %>
+
+<div style="margin-bottom: 2rem;">
+  <%= link_to "← 予約一覧に戻る", reservations_path, style: "color: #3498db; text-decoration: none;" %>
+</div>
+
+<div style="background-color: white; border: 1px solid #ddd; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+  <h1 style="margin-top: 0; color: #2c3e50;">予約詳細</h1>
+  
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin: 2rem 0;">
+    <div>
+      <h3 style="color: #34495e; margin-bottom: 0.5rem;">施設</h3>
+      <p style="font-size: 1.1rem; margin: 0;">
+        <%= link_to @reservation.facility.name, facility_path(@reservation.facility), style: "color: #3498db; text-decoration: none; font-weight: bold;" %>
+      </p>
+    </div>
+
+    <div>
+      <h3 style="color: #34495e; margin-bottom: 0.5rem;">ステータス</h3>
+      <span style="padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.875rem; 
+        <% case @reservation.status %>
+        <% when 'confirmed' %>
+          background-color: #d4edda; color: #155724;
+        <% when 'pending' %>
+          background-color: #fff3cd; color: #856404;
+        <% when 'cancelled' %>
+          background-color: #f8d7da; color: #721c24;
+        <% end %>">
+        <%= t("reservations.status.#{@reservation.status}") %>
+      </span>
+    </div>
+
+    <div>
+      <h3 style="color: #34495e; margin-bottom: 0.5rem;">予約者名</h3>
+      <p style="margin: 0;"><%= @reservation.user_name %></p>
+    </div>
+
+    <div>
+      <h3 style="color: #34495e; margin-bottom: 0.5rem;">メールアドレス</h3>
+      <p style="margin: 0;"><%= @reservation.user_email %></p>
+    </div>
+
+    <div>
+      <h3 style="color: #34495e; margin-bottom: 0.5rem;">開始時刻</h3>
+      <p style="margin: 0;"><%= l(@reservation.start_time, format: :long) %></p>
+    </div>
+
+    <div>
+      <h3 style="color: #34495e; margin-bottom: 0.5rem;">終了時刻</h3>
+      <p style="margin: 0;"><%= l(@reservation.end_time, format: :long) %></p>
+    </div>
+  </div>
+
+  <div style="margin: 2rem 0;">
+    <h3 style="color: #34495e; margin-bottom: 0.5rem;">利用目的</h3>
+    <p style="margin: 0; line-height: 1.6;"><%= @reservation.purpose %></p>
+  </div>
+
+  <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+    <%= link_to "編集", edit_reservation_path(@reservation), style: "background-color: #f39c12; color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 4px;" %>
+    <%= button_to "削除", @reservation, method: :delete, data: { turbo_confirm: "本当に削除しますか？" }, style: "background-color: #e74c3c; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer;" %>
+  </div>
+</div>

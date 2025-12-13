@@ -1,0 +1,74 @@
+<% content_for :title, "#{@facility.name} - Campus Reserve" %>
+
+<div style="margin-bottom: 2rem;">
+  <%= link_to "← 一覧に戻る", facilities_path, style: "color: #3498db; text-decoration: none;" %>
+</div>
+
+<div style="background-color: white; border: 1px solid #ddd; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+  <h1 style="margin-top: 0; color: #2c3e50;"><%= @facility.name %></h1>
+  
+  <div style="margin: 1.5rem 0;">
+    <h3 style="color: #34495e;">説明</h3>
+    <p style="color: #7f8c8d; line-height: 1.6;"><%= @facility.description || "説明がありません" %></p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0;">
+    <div style="background-color: #ecf0f1; padding: 1rem; border-radius: 4px;">
+      <strong>収容人数:</strong> <%= @facility.capacity %>名
+    </div>
+    <div style="background-color: #ecf0f1; padding: 1rem; border-radius: 4px;">
+      <strong>利用状況:</strong> 
+      <% if @facility.available %>
+        <span style="color: #27ae60;">✓ 利用可能</span>
+      <% else %>
+        <span style="color: #e74c3c;">✗ 利用不可</span>
+      <% end %>
+    </div>
+  </div>
+
+  <div style="margin: 2rem 0;">
+    <h3 style="color: #34495e;">この施設の予約</h3>
+    <% if @facility.reservations.any? %>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+        <thead>
+          <tr style="background-color: #ecf0f1;">
+            <th style="padding: 0.75rem; text-align: left; border: 1px solid #ddd;">予約者</th>
+            <th style="padding: 0.75rem; text-align: left; border: 1px solid #ddd;">開始時刻</th>
+            <th style="padding: 0.75rem; text-align: left; border: 1px solid #ddd;">終了時刻</th>
+            <th style="padding: 0.75rem; text-align: left; border: 1px solid #ddd;">ステータス</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @facility.reservations.order(start_time: :desc).limit(5).each do |reservation| %>
+            <tr>
+              <td style="padding: 0.75rem; border: 1px solid #ddd;"><%= reservation.user_name %></td>
+              <td style="padding: 0.75rem; border: 1px solid #ddd;"><%= l(reservation.start_time, format: :long) %></td>
+              <td style="padding: 0.75rem; border: 1px solid #ddd;"><%= l(reservation.end_time, format: :long) %></td>
+              <td style="padding: 0.75rem; border: 1px solid #ddd;">
+                <span style="padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem; 
+                  <% case reservation.status %>
+                  <% when 'confirmed' %>
+                    background-color: #d4edda; color: #155724;
+                  <% when 'pending' %>
+                    background-color: #fff3cd; color: #856404;
+                  <% when 'cancelled' %>
+                    background-color: #f8d7da; color: #721c24;
+                  <% end %>">
+                  <%= t("reservations.status.#{reservation.status}") %>
+                </span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p style="color: #7f8c8d;">この施設の予約はまだありません。</p>
+    <% end %>
+  </div>
+
+  <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+    <%= link_to "編集", edit_facility_path(@facility), style: "background-color: #f39c12; color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 4px;" %>
+    <%= button_to "削除", @facility, method: :delete, data: { turbo_confirm: "本当に削除しますか？" }, style: "background-color: #e74c3c; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer;" %>
+    <%= link_to "この施設を予約", new_reservation_path(facility_id: @facility.id), style: "background-color: #27ae60; color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 4px;" %>
+  </div>
+</div>
