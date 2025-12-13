@@ -24,6 +24,24 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%# ヘッダー %>
+    <%= render 'shared/header' %>
+    
+    <%# flashメッセージの表示 %>
+    <% if flash.any? %>
+      <div class="flash-messages">
+        <% flash.each do |type, message| %>
+          <div class="alert alert-<%= type == 'success' ? 'success' : 'danger' %> alert-dismissible fade show" role="alert">
+            <%= message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%# メインコンテンツ %>
+    <main class="container">
+      <%= yield %>
+    </main>
   </body>
 </html>

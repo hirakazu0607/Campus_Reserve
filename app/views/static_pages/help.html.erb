@@ -1,0 +1,64 @@
+<% provide(:title, "Help") %>
+
+<h1>ヘルプ</h1>
+
+<div class="accordion mt-4" id="helpAccordion">
+  <!-- ユーザー登録 -->
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+        ユーザー登録方法
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#helpAccordion">
+      <div class="accordion-body">
+        <ol>
+          <li>「登録」ボタンをクリック</li>
+          <li>氏名、学籍番号、メールアドレスを入力</li>
+          <li>パスワードを設定（6文字以上）</li>
+          <li>役割（学生/教職員）を選択</li>
+          <li>「登録」ボタンをクリック</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ログイン -->
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+        ログイン方法（今後実装予定）
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+      <div class="accordion-body">
+        <p>登録したメールアドレスとパスワードでログインできます。</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 予約方法 -->
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+        施設予約方法（今後実装予定）
+      </button>
+    </h2>
+    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+      <div class="accordion-body">
+        <ol>
+          <li>施設一覧から予約したい施設を選択</li>
+          <li>カレンダーから日時を選択</li>
+          <li>利用目的を入力</li>
+          <li>予約申請を送信</li>
+          <li>教職員の承認を待つ</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-4">
+  <h3>お問い合わせ</h3>
+  <p>ご不明な点がございましたら、システム管理者までお問い合わせください。</p>
+</div>
