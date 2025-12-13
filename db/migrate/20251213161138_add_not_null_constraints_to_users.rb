@@ -6,7 +6,6 @@ class AddNotNullConstraintsToUsers < ActiveRecord::Migration[8.1]
     change_column_null :users, :student_or_staff_number, false
 
     # インデックスも追加（パフォーマンス向上）
-    add_index :users, :email, unique: true
     add_index :users, :student_or_staff_number, unique: true
   end
 end
