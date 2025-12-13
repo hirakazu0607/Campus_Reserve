@@ -70,4 +70,5 @@ group :test do
   gem "factory_bot_rails" # テストデータを簡単に作成
   gem "faker" # ダミーデータ生成
   gem "rails-controller-testing" # コントローラーテスト用（render_template, assignsなど）
+  gem "simplecov", require: false # コードカバレッジ測定
 end

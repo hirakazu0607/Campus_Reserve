@@ -95,6 +95,14 @@ jobs:
           DATABASE_PASSWORD: password
         run: bundle exec rails db:test:prepare && bundle exec rspec
 
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30
+
   # system-test:
   #   runs-on: ubuntu-latest
 
