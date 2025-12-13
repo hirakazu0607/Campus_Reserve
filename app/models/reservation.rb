@@ -24,7 +24,7 @@ class Reservation < ApplicationRecord
     return if end_time.blank? || start_time.blank?
 
     if end_time <= start_time
-      errors.add(:end_time, "must be after the start time")
+      errors.add(:end_time, I18n.t('activerecord.errors.models.reservation.attributes.end_time.after_start_time'))
     end
   end
 
@@ -37,7 +37,7 @@ class Reservation < ApplicationRecord
                              .where("start_time < ? AND end_time > ?", end_time, start_time)
 
     if overlapping.exists?
-      errors.add(:base, "This facility is already reserved for the selected time period")
+      errors.add(:base, I18n.t('activerecord.errors.models.reservation.attributes.base.overlapping'))
     end
   end
 end
