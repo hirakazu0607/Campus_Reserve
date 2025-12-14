@@ -5,7 +5,7 @@
     <%= link_to "Campus Reserve", root_path, class: "navbar-brand" %>
 
     <!-- ハンバーガーメニュー（スマホ用） -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -21,9 +21,35 @@
         <li class="nav-item">
           <%= link_to "Help", help_path, class: "nav-link" %>
         </li>
-        <li class="nav-item">
-          <%= link_to "登録", new_user_path, class: "nav-link btn btn-outline-light ms-2" %>
-        </li>
+
+        <% if logged_in? %>
+          <!-- ログイン済みの場合 -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <%= current_user.name %>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <li>
+                <%= link_to "Profile", "#", class: "dropdown-item" %>
+              </li>
+              <li>
+                <%= link_to "Settings", "#", class: "dropdown-item" %>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <%= button_to "Logout", session_path, method: :delete, class: "dropdown-item" %>
+              </li>
+            </ul>
+          </li>
+        <% else %>
+          <!-- 未ログインの場合 -->
+          <li class="nav-item">
+            <%= link_to "ログイン", new_session_path, class: "nav-link btn btn-outline-light ms-2" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "登録", new_user_path, class: "nav-link btn btn-light ms-2" %>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
