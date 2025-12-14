@@ -10,9 +10,9 @@ Rails.application.routes.draw do
   get "about", to: "static_pages#about"
   get "help",  to: "static_pages#help"
 
-  # 👤 ユーザー登録
-  resources :users, only: [ :new, :create ]
+  # 👤 ユーザー管理（登録・プロフィール・編集）
+  resources :users, only: %i[new create show edit update]
 
   # 🔐 ログイン・ログアウト（セッション管理）
-  resource :session, only: [ :new, :create, :destroy ], path_names: { new: "login" }
+  resource :session, only: %i[new create destroy], path_names: { new: "login" }
 end
