@@ -21,6 +21,11 @@
         <li class="nav-item">
           <%= link_to "Help", help_path, class: "nav-link" %>
         </li>
+        <% if logged_in? %>
+          <li class="nav-item">
+            <%= link_to "施設", facilities_path, class: "nav-link" %>
+          </li>
+        <% end %>
 
         <% if logged_in? %>
           <!-- ログイン済みの場合 -->

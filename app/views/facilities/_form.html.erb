@@ -1,0 +1,45 @@
+<%# 施設登録・編集の共通フォーム %>
+<%= form_with(model: facility, local: true) do |f| %>
+  <%# エラーメッセージ %>
+  <% if facility.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(facility.errors.count, "件のエラー") %>があります</h5>
+      <ul class="mb-0">
+        <% facility.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%# 施設名 %>
+  <div class="mb-3">
+    <%= f.label :name, "施設名", class: "form-label" %>
+    <%= f.text_field :name, class: "form-control", placeholder: "体育館", required: true %>
+  </div>
+
+  <%# 場所 %>
+  <div class="mb-3">
+    <%= f.label :location, "場所", class: "form-label" %>
+    <%= f.text_field :location, class: "form-control", placeholder: "1号館 101教室", required: true %>
+  </div>
+
+  <%# 収容人数 %>
+  <div class="mb-3">
+    <%= f.label :capacity, "収容人数", class: "form-label" %>
+    <%= f.number_field :capacity, class: "form-control", placeholder: "50", min: 1, required: true %>
+    <small class="form-text text-muted">※ 1以上の整数を入力してください</small>
+  </div>
+
+  <%# 説明 %>
+  <div class="mb-3">
+    <%= f.label :description, "説明（任意）", class: "form-label" %>
+    <%= f.text_area :description, class: "form-control", rows: 5,
+                    placeholder: "施設の詳細や利用可能な設備などを入力してください" %>
+  </div>
+
+  <%# 送信ボタン %>
+  <div class="d-grid">
+    <%= f.submit facility.new_record? ? "登録する" : "更新する", class: "btn btn-primary" %>
+  </div>
+<% end %>

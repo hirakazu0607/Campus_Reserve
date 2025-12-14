@@ -15,4 +15,7 @@ Rails.application.routes.draw do
 
   # 🔐 ログイン・ログアウト（セッション管理）
   resource :session, only: %i[new create destroy], path_names: { new: "login" }
+
+  # 🏢 施設管理
+  resources :facilities
 end

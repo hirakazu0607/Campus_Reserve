@@ -1,0 +1,74 @@
+<% content_for :title, @facility.name %>
+
+<div class="container mt-5">
+  <div class="card shadow">
+    <div class="card-body">
+      <%# ヘッダー %>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">🏢 <%= @facility.name %></h2>
+        <% if current_user.staff? %>
+          <div>
+            <%= link_to "編集", edit_facility_path(@facility), class: "btn btn-outline-primary me-2" %>
+            <%= button_to "削除", facility_path(@facility), method: :delete,
+                          data: { turbo_confirm: "本当に削除しますか？" },
+                          class: "btn btn-outline-danger" %>
+          </div>
+        <% end %>
+      </div>
+
+      <hr>
+
+      <%# 施設情報 %>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <strong>📍 場所</strong>
+        </div>
+        <div class="col-md-9">
+          <%= @facility.location %>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <strong>👥 収容人数</strong>
+        </div>
+        <div class="col-md-9">
+          <%= @facility.capacity %>名
+        </div>
+      </div>
+
+      <% if @facility.description.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <strong>📝 説明</strong>
+          </div>
+          <div class="col-md-9">
+            <%= simple_format(@facility.description) %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <strong>📅 登録日</strong>
+        </div>
+        <div class="col-md-9">
+          <%= @facility.created_at.strftime("%Y年%m月%d日") %>
+        </div>
+      </div>
+
+      <%# アクションボタン %>
+      <div class="d-grid gap-2 mt-4">
+        <%= link_to "一覧に戻る", facilities_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
+
+  <%# 今後の拡張：予約一覧 %>
+  <div class="card shadow mt-4">
+    <div class="card-body">
+      <h5 class="card-title">📋 この施設の予約</h5>
+      <p class="text-muted">※ 予約機能は今後実装予定です</p>
+    </div>
+  </div>
+</div>
