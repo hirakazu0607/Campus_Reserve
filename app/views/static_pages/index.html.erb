@@ -1,24 +1,144 @@
 <% provide(:title, "Home") %>
 
-<div class="jumbotron">
-  <h1 class="display-4">🏫 Campus Reserve</h1>
-  <p class="lead">学校施設の予約管理システム</p>
-  <hr class="my-4">
-  <p>体育館、講義室などの施設を簡単に予約・管理できます</p>
-  <%= link_to "今すぐ登録する", new_user_path, class: "btn btn-primary btn-lg" %>
-</div>
+<% if logged_in? %>
+  <!-- ログイン済み：カレンダー表示 -->
+  <div class="container mt-4">
+    <div class="row mb-4">
+      <div class="col">
+        <h1>📅 予約カレンダー</h1>
+      </div>
+      <div class="col-auto">
+        <%= link_to "新規予約", new_reservation_path, class: "btn btn-primary" %>
+      </div>
+    </div>
 
-<div class="row">
-  <div class="col-md-4">
-    <h2>📅 簡単予約</h2>
-    <p>カレンダーから日時を選んで、数クリックで予約完了</p>
+    <!-- 月のナビゲーション -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <%= link_to "« 前月", root_path(date: @date.prev_month.strftime("%Y-%m-%d")), class: "btn btn-outline-secondary" %>
+      <h2 class="mb-0"><%= @date.strftime("%Y年 %m月") %></h2>
+      <%= link_to "次月 »", root_path(date: @date.next_month.strftime("%Y-%m-%d")), class: "btn btn-outline-secondary" %>
+    </div>
+
+    <!-- カレンダー -->
+    <div class="card">
+      <div class="card-body p-0">
+        <table class="table table-bordered mb-0 calendar-table">
+          <thead>
+            <tr class="table-light">
+              <th class="text-center">日</th>
+              <th class="text-center">月</th>
+              <th class="text-center">火</th>
+              <th class="text-center">水</th>
+              <th class="text-center">木</th>
+              <th class="text-center">金</th>
+              <th class="text-center">土</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% start_date = @date.beginning_of_month.beginning_of_week(:sunday) %>
+            <% end_date = @date.end_of_month.end_of_week(:sunday) %>
+            <% (start_date..end_date).each_slice(7) do |week| %>
+              <tr>
+                <% week.each do |day| %>
+                  <% in_current_month = day.month == @date.month %>
+                  <% is_today = day == Date.today %>
+                  <% is_future = day >= Date.today %>
+                  <% has_reservation = @reserved_dates.include?(day) %>
+                  <% day_reservations = @reservations.select { |r| r.start_time.to_date == day } %>
+
+                  <td class="calendar-day <%= 'text-muted' unless in_current_month %> <%= 'bg-light' unless in_current_month %> <%= 'table-info' if is_today %> <%= 'has-reservation' if has_reservation %> <%= 'clickable-day' if is_future && in_current_month %>"
+                      style="height: 100px; vertical-align: top; cursor: pointer;"
+                      onclick="<%= is_future && in_current_month ? "window.location.href='#{new_reservation_path(date: day.strftime('%Y-%m-%d'))}'" : '' %>">
+                    <div class="d-flex justify-content-between align-items-start p-2">
+                      <strong class="<%= 'text-primary' if day.wday == 0 %> <%= 'text-danger' if day.wday == 6 %>"><%= day.day %></strong>
+                      <% if has_reservation %>
+                        <%= link_to "📅 #{day_reservations.count}件", "#day-#{day.strftime('%Y%m%d')}",
+                            class: "badge bg-primary text-decoration-none",
+                            data: { bs_toggle: "collapse" },
+                            onclick: "event.stopPropagation();" %>
+                      <% end %>
+                    </div>
+
+                    <% if has_reservation %>
+                      <div class="collapse px-2" id="day-<%= day.strftime('%Y%m%d') %>">
+                        <% day_reservations.first(3).each do |reservation| %>
+                          <div class="small mb-1">
+                            <%= link_to reservation_path(reservation), class: "text-decoration-none" do %>
+                              <span class="badge <%= case reservation.status
+                                when 'pending' then 'bg-warning text-dark'
+                                when 'approved' then 'bg-success'
+                                when 'rejected' then 'bg-danger'
+                                when 'cancelled' then 'bg-secondary'
+                                end %>">
+                                <%= reservation.start_time.strftime("%H:%M") %>
+                              </span>
+                              <%= truncate(reservation.facility.name, length: 12) %>
+                            <% end %>
+                          </div>
+                        <% end %>
+                        <% if day_reservations.count > 3 %>
+                          <div class="small text-muted">+<%= day_reservations.count - 3 %>件...</div>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- カレンダー下の説明 -->
+    <div class="mt-3">
+      <small class="text-muted">
+        <span class="badge bg-warning text-dark">承認待ち</span>
+        <span class="badge bg-success">承認済み</span>
+        <span class="badge bg-danger">拒否</span>
+        <span class="badge bg-secondary">キャンセル</span>
+      </small>
+    </div>
   </div>
-  <div class="col-md-4">
-    <h2>✅ 承認機能</h2>
-    <p>教職員が予約を確認・承認。重複予約も自動でチェック</p>
+
+  <style>
+    .calendar-table td {
+      position: relative;
+    }
+    .calendar-table .has-reservation {
+      background-color: #f8f9fa;
+    }
+    .calendar-table .clickable-day:hover {
+      background-color: #e7f3ff !important;
+      transition: background-color 0.2s;
+    }
+    .calendar-table td:hover.has-reservation {
+      background-color: #e9ecef;
+    }
+  </style>
+
+<% else %>
+  <!-- 未ログイン：ランディングページ -->
+  <div class="jumbotron">
+    <h1 class="display-4">🏫 Campus Reserve</h1>
+    <p class="lead">学校施設の予約管理システム</p>
+    <hr class="my-4">
+    <p>体育館、講義室などの施設を簡単に予約・管理できます</p>
+    <%= link_to "今すぐ登録する", new_user_path, class: "btn btn-primary btn-lg" %>
   </div>
-  <div class="col-md-4">
-    <h2>🔒 安全管理</h2>
-    <p>ロールベースのアクセス制御で、権限に応じた機能を提供</p>
+
+  <div class="row">
+    <div class="col-md-4">
+      <h2>📅 簡単予約</h2>
+      <p>カレンダーから日時を選んで、数クリックで予約完了</p>
+    </div>
+    <div class="col-md-4">
+      <h2>✅ 承認機能</h2>
+      <p>教職員が予約を確認・承認。重複予約も自動でチェック</p>
+    </div>
+    <div class="col-md-4">
+      <h2>🔒 安全管理</h2>
+      <p>ロールベースのアクセス制御で、権限に応じた機能を提供</p>
+    </div>
   </div>
-</div>
+<% end %>
