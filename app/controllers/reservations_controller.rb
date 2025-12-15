@@ -1,5 +1,6 @@
 class ReservationsController < ApplicationController
   before_action :require_login
+
   before_action :set_reservation, only: [ :show, :edit, :update, :destroy, :approve, :reject ]
   before_action :authorize_user, only: [ :edit, :update, :destroy ]
   before_action :require_staff, only: [ :approve, :reject ]
@@ -50,7 +51,7 @@ class ReservationsController < ApplicationController
   def edit
     # Only pending reservations can be edited
     unless @reservation.pending?
-      redirect_to @reservation, alert: "承認待ちの予約のみ編集できます"
+      redirect_to @reservation, alert: "承認待ちの予約のみ編集できま
       return
     end
     @facilities = Facility.all
@@ -65,6 +66,7 @@ class ReservationsController < ApplicationController
 
     if @reservation.update(reservation_params)
       redirect_to @reservation, notice: "予約を更新しました"
+
     else
       @facilities = Facility.all
       render :edit, status: :unprocessable_entity
