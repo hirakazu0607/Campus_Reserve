@@ -49,26 +49,25 @@ test:
 #
 production:
   primary:
-    <<: *default
     adapter: postgresql
     encoding: unicode
     pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
     url: <%= ENV['DATABASE_URL'] %>
   cache:
-    <<: *default
     adapter: postgresql
     encoding: unicode
-    database: cache
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    url: <%= ENV['DATABASE_URL'] %>_cache
     migrations_paths: db/cache_migrate
   queue:
-    <<: *default
     adapter: postgresql
     encoding: unicode
-    database: queue
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    url: <%= ENV['DATABASE_URL'] %>_queue
     migrations_paths: db/queue_migrate
   cable:
-    <<: *default
     adapter: postgresql
     encoding: unicode
-    database: cable
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    url: <%= ENV['DATABASE_URL'] %>_cable
     migrations_paths: db/cable_migrate
