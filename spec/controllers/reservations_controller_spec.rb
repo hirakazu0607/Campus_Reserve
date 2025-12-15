@@ -322,6 +322,12 @@ RSpec.describe ReservationsController, type: :controller do
         patch :approve, params: { id: reservation.id }
         expect(response).to redirect_to(root_path)
       end
+
+      it "does not change reservation status" do
+        patch :approve, params: { id: reservation.id }
+        reservation.reload
+        expect(reservation.pending?).to be true
+      end
     end
 
     context "when not logged in" do
@@ -354,6 +360,12 @@ RSpec.describe ReservationsController, type: :controller do
       it "redirects to root path" do
         patch :reject, params: { id: reservation.id }
         expect(response).to redirect_to(root_path)
+      end
+
+      it "does not change reservation status" do
+        patch :reject, params: { id: reservation.id }
+        reservation.reload
+        expect(reservation.pending?).to be true
       end
     end
 

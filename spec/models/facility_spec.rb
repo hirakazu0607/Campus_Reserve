@@ -1,26 +1,30 @@
 require 'rails_helper'
 
 RSpec.describe Facility, type: :model do
+  describe "associations" do
+    it { should have_many(:reservations).dependent(:destroy) }
+  end
+
   describe "validations" do
     let(:facility) { build(:facility) }
 
-    it "is valid with valid attributes" do
+    it "有効な属性の場合に有効であること" do
       expect(facility).to be_valid
     end
 
     describe "name" do
-      it "is invalid without a name" do
+      it "存在しないと無効であること" do
         facility.name = nil
         expect(facility).not_to be_valid
         expect(facility.errors[:name]).to include("can't be blank")
       end
 
-      it "is invalid with more than 100 characters" do
+      it "100文字を超えると無効であること" do
         facility.name = "a" * 101
         expect(facility).not_to be_valid
       end
 
-      it "is invalid with a duplicate name" do
+      it "重複していると無効であること" do
         create(:facility, name: "Gymnasium")
         facility.name = "Gymnasium"
         expect(facility).not_to be_valid

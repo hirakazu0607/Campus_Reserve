@@ -1,6 +1,6 @@
 class ReservationsController < ApplicationController
   before_action :require_login
-  before_action :set_reservation, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_reservation, only: [ :show, :edit, :update, :destroy, :approve, :reject ]
   before_action :authorize_user, only: [ :edit, :update, :destroy ]
   before_action :require_staff, only: [ :approve, :reject ]
 
@@ -79,14 +79,12 @@ class ReservationsController < ApplicationController
 
   # PATCH /reservations/:id/approve
   def approve
-    @reservation = Reservation.find(params[:id])
     @reservation.approved!
     redirect_to @reservation, notice: "予約を承認しました"
   end
 
   # PATCH /reservations/:id/reject
   def reject
-    @reservation = Reservation.find(params[:id])
     @reservation.rejected!
     redirect_to @reservation, notice: "予約を拒否しました"
   end
