@@ -1,30 +1,30 @@
 require 'rails_helper'
 
 RSpec.describe Facility, type: :model do
-  describe "バリデーション" do
+  describe "validations" do
     let(:facility) { build(:facility) }
 
-    it "有効なファクトリを持つこと" do
+    it "is valid with valid attributes" do
       expect(facility).to be_valid
     end
 
     describe "name" do
-      it "存在しないと無効であること" do
+      it "is invalid without a name" do
         facility.name = nil
         expect(facility).not_to be_valid
-        expect(facility.errors[:name]).to include("を入力してください")
+        expect(facility.errors[:name]).to include("can't be blank")
       end
 
-      it "100文字以下であること" do
+      it "is invalid with more than 100 characters" do
         facility.name = "a" * 101
         expect(facility).not_to be_valid
       end
 
-      it "重複すると無効であること" do
-        create(:facility, name: "体育館")
-        facility.name = "体育館"
+      it "is invalid with a duplicate name" do
+        create(:facility, name: "Gymnasium")
+        facility.name = "Gymnasium"
         expect(facility).not_to be_valid
-        expect(facility.errors[:name]).to include("はすでに存在します")
+        expect(facility.errors[:name]).to include("has already been taken")
       end
     end
 
@@ -54,7 +54,7 @@ RSpec.describe Facility, type: :model do
       it "0より大きい必要があること" do
         facility.capacity = 0
         expect(facility).not_to be_valid
-        
+
         facility.capacity = -1
         expect(facility).not_to be_valid
       end
