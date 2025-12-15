@@ -7,4 +7,14 @@ class ApplicationController < ActionController::Base
 
   # SessionsHelperをincludeして全コントローラーで使用可能にする
   include SessionsHelper
+
+  private
+
+  # ログインしているか確認
+  def require_login
+    unless logged_in?
+      flash[:danger] = "ログインしてください"
+      redirect_to new_session_path
+    end
+  end
 end

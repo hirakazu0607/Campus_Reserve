@@ -1,0 +1,19 @@
+<% content_for :title, "施設編集" %>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-body">
+          <h2 class="card-title text-center mb-4">🏢 施設編集</h2>
+
+          <%= render 'form', facility: @facility %>
+
+          <div class="text-center mt-3">
+            <%= link_to "キャンセル", @facility, class: "btn btn-secondary" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

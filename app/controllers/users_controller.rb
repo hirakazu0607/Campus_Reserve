@@ -57,14 +57,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # ログインしているか確認
-  def require_login
-    unless logged_in?
-      flash[:danger] = "ログインしてください"
-      redirect_to new_session_path
-    end
-  end
-
   # ユーザーを取得
   def set_user
     @user = User.find(params[:id])
