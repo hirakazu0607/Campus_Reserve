@@ -1,6 +1,7 @@
 class ReservationsController < ApplicationController
   before_action :require_login
-  before_action :set_reservation, only: [ :show, :edit, :update, :destroy ]
+
+  before_action :set_reservation, only: [ :show, :edit, :update, :destroy, :approve, :reject ]
   before_action :authorize_user, only: [ :edit, :update, :destroy ]
   before_action :require_staff, only: [ :approve, :reject ]
 
@@ -23,6 +24,14 @@ class ReservationsController < ApplicationController
   # GET /reservations/new
   def new
     @reservation = Reservation.new
+
+    # カレンダーから日付が渡された場合、開始時刻と終了時刻を設定
+    if params[:date].present?
+      date = Date.parse(params[:date])
+      @reservation.start_time = date.to_time.change(hour: 10, min: 0)
+      @reservation.end_time = date.to_time.change(hour: 12, min: 0)
+    end
+
     @facilities = Facility.all
   end
 
@@ -31,7 +40,7 @@ class ReservationsController < ApplicationController
     @reservation = current_user.reservations.build(reservation_params)
 
     if @reservation.save
-      redirect_to @reservation, notice: "Reservation was successfully created."
+      redirect_to @reservation, notice: "予約を作成しました"
     else
       @facilities = Facility.all
       render :new, status: :unprocessable_entity
@@ -42,7 +51,7 @@ class ReservationsController < ApplicationController
   def edit
     # Only pending reservations can be edited
     unless @reservation.pending?
-      redirect_to @reservation, alert: "Only pending reservations can be edited."
+      redirect_to @reservation, alert: "承認待ちの予約のみ編集できます"
       return
     end
     @facilities = Facility.all
@@ -51,12 +60,13 @@ class ReservationsController < ApplicationController
   # PATCH/PUT /reservations/:id
   def update
     unless @reservation.pending?
-      redirect_to @reservation, alert: "Only pending reservations can be updated."
+      redirect_to @reservation, alert: "承認待ちの予約のみ更新できます"
       return
     end
 
     if @reservation.update(reservation_params)
-      redirect_to @reservation, notice: "Reservation was successfully updated."
+      redirect_to @reservation, notice: "予約を更新しました"
+
     else
       @facilities = Facility.all
       render :edit, status: :unprocessable_entity
@@ -66,21 +76,19 @@ class ReservationsController < ApplicationController
   # DELETE /reservations/:id
   def destroy
     @reservation.cancelled!
-    redirect_to reservations_path, notice: "Reservation was cancelled."
+    redirect_to reservations_path, notice: "予約をキャンセルしました"
   end
 
   # PATCH /reservations/:id/approve
   def approve
-    @reservation = Reservation.find(params[:id])
     @reservation.approved!
-    redirect_to @reservation, notice: "Reservation was approved."
+    redirect_to @reservation, notice: "予約を承認しました"
   end
 
   # PATCH /reservations/:id/reject
   def reject
-    @reservation = Reservation.find(params[:id])
     @reservation.rejected!
-    redirect_to @reservation, notice: "Reservation was rejected."
+    redirect_to @reservation, notice: "予約を拒否しました"
   end
 
   private
@@ -91,7 +99,7 @@ class ReservationsController < ApplicationController
 
   def authorize_user
     unless @reservation.user == current_user
-      redirect_to reservations_path, alert: "You are not authorized to perform this action."
+      redirect_to reservations_path, alert: "この操作を行う権限がありません"
     end
   end
 

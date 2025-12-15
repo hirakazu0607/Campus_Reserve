@@ -64,11 +64,36 @@
     </div>
   </div>
 
-  <%# 今後の拡張：予約一覧 %>
+  <%# 予約一覧 %>
   <div class="card shadow mt-4">
     <div class="card-body">
       <h5 class="card-title">📋 この施設の予約</h5>
-      <p class="text-muted">※ 予約機能は今後実装予定です</p>
+      <% if @facility.reservations.any? %>
+        <ul class="list-group mt-3">
+          <% @facility.reservations.order(start_time: :asc).each do |reservation| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong><%= reservation.user.name %></strong>
+                <span class="ms-2 text-muted">
+                  <%= reservation.start_time.strftime("%Y年%m月%d日 %H:%M") %> 〜 <%= reservation.end_time.strftime("%H:%M") %>
+                </span>
+              </div>
+              <% case reservation.status %>
+              <% when "pending" %>
+                <span class="badge bg-warning">承認待ち</span>
+              <% when "approved" %>
+                <span class="badge bg-success">承認済み</span>
+              <% when "rejected" %>
+                <span class="badge bg-danger">拒否</span>
+              <% when "cancelled" %>
+                <span class="badge bg-secondary">キャンセル</span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-muted mt-3">現在予約はありません</p>
+      <% end %>
     </div>
   </div>
 </div>

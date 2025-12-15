@@ -23,7 +23,7 @@ RSpec.describe Reservation, type: :model do
       it "is invalid if in the past" do
         reservation.start_time = 1.hour.ago
         expect(reservation).not_to be_valid
-        expect(reservation.errors[:start_time]).to include("must be in the future")
+        expect(reservation.errors[:start_time]).to include("未来の日時を指定してください")
       end
     end
 
@@ -38,7 +38,7 @@ RSpec.describe Reservation, type: :model do
         reservation.start_time = 2.days.from_now.change(hour: 14, min: 0)
         reservation.end_time = 2.days.from_now.change(hour: 12, min: 0)
         expect(reservation).not_to be_valid
-        expect(reservation.errors[:end_time]).to include("must be after start time")
+        expect(reservation.errors[:end_time]).to include("開始時刻より後に設定してください")
       end
 
       it "is invalid if equal to start_time" do
@@ -46,7 +46,7 @@ RSpec.describe Reservation, type: :model do
         reservation.start_time = time
         reservation.end_time = time
         expect(reservation).not_to be_valid
-        expect(reservation.errors[:end_time]).to include("must be after start time")
+        expect(reservation.errors[:end_time]).to include("開始時刻より後に設定してください")
       end
     end
 
@@ -99,7 +99,7 @@ RSpec.describe Reservation, type: :model do
                             end_time: 2.days.from_now.change(hour: 13, min: 0))
 
         expect(overlapping).not_to be_valid
-        expect(overlapping.errors[:base]).to include("This time slot is already reserved")
+        expect(overlapping.errors[:base]).to include("この時間帯はすでに予約されています")
       end
 
       it "is valid if reservation is for a different facility" do
