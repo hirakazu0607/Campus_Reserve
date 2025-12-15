@@ -1,22 +1,59 @@
-# README
+# Campus Reserve - 学校施設予約システム
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+学校の施設を予約・管理するためのWebアプリケーションです。学生は施設を予約でき、職員は予約の承認・管理ができます。
 
-Things you may want to cover:
+## ✨ 機能
 
-* Ruby version
+### 👨‍🎓 学生向け機能
+- **ユーザー登録・ログイン**: セキュアな認証システム
+- **施設一覧・詳細表示**: 利用可能な施設の確認
+- **予約作成**: カレンダーから日付を選択して予約申請
+- **予約管理**: 自分の予約の確認・編集・キャンセル
+- **予約ステータス確認**: 承認待ち・承認済み・拒否・キャンセルのステータス表示
 
-* System dependencies
+### 👨‍💼 職員向け機能
+- **施設管理**: 施設の登録・編集・削除
+- **予約承認/拒否**: 学生からの予約申請を承認または拒否
+- **全予約一覧**: システム内の全予約の確認
+- **保留中予約の通知**: ナビゲーションバーに承認待ち予約数のバッジ表示
 
-* Configuration
+### 📅 その他の機能
+- **カレンダービュー**: ホーム画面に月次カレンダー表示
+- **予約重複チェック**: 同じ施設・時間帯の重複予約を防止
+- **レスポンシブデザイン**: Bootstrap 5を使用したモバイル対応UI
 
-* Database creation
+## 🛠️ 技術スタック
 
-* Database initialization
+### バックエンド
+- **Ruby**: 3.4.7
+- **Rails**: 8.1.1
+- **MySQL**: 8.0
+- **認証**: bcrypt (has_secure_password)
 
-* How to run the test suite
+### フロントエンド
+- **Propshaft**: アセットパイプライン
+- **Bootstrap**: 5.3.2 (CDN)
+- **Stimulus**: Hotwire Stimulus
+- **Turbo**: Hotwire Turbo
 
-* Services (job queues, cache servers, search engines, etc.)
+### テスト
+- **RSpec**: 8.0 (rails-controller-testing, shoulda-matchers)
+- **FactoryBot**: テストデータ生成
+- **Faker**: ダミーデータ生成
+- **SimpleCov**: コードカバレッジ測定
 
-* Deployment instructions
+### CI/CD
+- **GitHub Actions**: 自動テスト・Lint実行
+
+## 📋 必要要件
+
+- Ruby 3.4.7以上
+- MySQL 8.0以上
+- Node.js (最新LTS版推奨)
+
+## 🚀 セットアップ
+
+### 1. リポジトリのクローン
+```bash
+git clone https://github.com/yourusername/campus_reserve.git
+cd campus_reserve
