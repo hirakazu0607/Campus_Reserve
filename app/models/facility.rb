@@ -1,4 +1,7 @@
 class Facility < ApplicationRecord
+  # アソシエーション
+  has_many :reservations, dependent: :destroy
+
   # バリデーション
   validates :name, presence: true, length: { maximum: 100 }, uniqueness: true
   validates :description, length: { maximum: 500 }

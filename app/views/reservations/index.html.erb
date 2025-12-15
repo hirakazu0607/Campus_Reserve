@@ -1,0 +1,81 @@
+<% content_for :title, "予約一覧" %>
+
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h1>予約一覧</h1>
+    </div>
+    <div class="col-auto">
+      <%= link_to "新規予約", new_reservation_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+
+  <% if @reservations.empty? %>
+    <div class="alert alert-info">
+      予約がありません。<%= link_to "最初の予約を作成", new_reservation_path %>してください。
+    </div>
+  <% else %>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>施設名</th>
+            <% if current_user.staff? %>
+              <th>予約者</th>
+            <% end %>
+            <th>開始時刻</th>
+            <th>終了時刻</th>
+            <th>ステータス</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @reservations.each do |reservation| %>
+            <tr>
+              <td>
+                <%= link_to reservation.facility.name, facility_path(reservation.facility) %>
+              </td>
+              <% if current_user.staff? %>
+                <td><%= reservation.user.name %></td>
+              <% end %>
+              <td><%= reservation.start_time.strftime("%Y-%m-%d %H:%M") %></td>
+              <td><%= reservation.end_time.strftime("%Y-%m-%d %H:%M") %></td>
+              <td>
+                <% case reservation.status %>
+                <% when "pending" %>
+                  <span class="badge bg-warning text-dark">承認待ち</span>
+                <% when "approved" %>
+                  <span class="badge bg-success">承認済み</span>
+                <% when "rejected" %>
+                  <span class="badge bg-danger">拒否</span>
+                <% when "cancelled" %>
+                  <span class="badge bg-secondary">キャンセル</span>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to "詳細", reservation_path(reservation), class: "btn btn-sm btn-outline-primary" %>
+
+                <% if reservation.user == current_user && reservation.pending? %>
+                  <%= link_to "編集", edit_reservation_path(reservation), class: "btn btn-sm btn-outline-secondary" %>
+                  <%= button_to "キャンセル", reservation_path(reservation),
+                      method: :delete,
+                      class: "btn btn-sm btn-outline-danger",
+                      form: { data: { turbo_confirm: "本当にこの予約をキャンセルしますか？" } } %>
+                <% end %>
+
+                <% if current_user.staff? && reservation.pending? %>
+                  <%= button_to "承認", approve_reservation_path(reservation),
+                      method: :patch,
+                      class: "btn btn-sm btn-success" %>
+                  <%= button_to "拒否", reject_reservation_path(reservation),
+                      method: :patch,
+                      class: "btn btn-sm btn-danger" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>

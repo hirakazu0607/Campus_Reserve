@@ -18,4 +18,12 @@ Rails.application.routes.draw do
 
   # 🏢 施設管理
   resources :facilities
+
+  # 📅 予約管理
+  resources :reservations do
+    member do
+      patch :approve
+      patch :reject
+    end
+  end
 end
