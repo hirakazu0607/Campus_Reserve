@@ -12,4 +12,7 @@ Rails.application.routes.draw do
 
   # 👤 ユーザー登録
   resources :users, only: [ :new, :create ]
+
+  # 🔐 ログイン・ログアウト（セッション管理）
+  resource :session, only: [ :new, :create, :destroy ], path_names: { new: "login" }
 end

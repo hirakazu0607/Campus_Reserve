@@ -1,0 +1,34 @@
+<% content_for :title, "ログイン" %>
+
+<div class="row justify-content-center mt-5">
+  <div class="col-md-6">
+    <div class="card shadow">
+      <div class="card-body">
+        <h2 class="card-title text-center mb-4">ログイン</h2>
+
+        <%= form_with(url: session_path, scope: :session, local: true) do |f| %>
+          <div class="mb-3">
+            <%= f.label :email, "メールアドレス", class: "form-label" %>
+            <%= f.email_field :email, class: "form-control", placeholder: "example@email.com", required: true %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :password, "パスワード", class: "form-label" %>
+            <%= f.password_field :password, class: "form-control", placeholder: "パスワード", required: true %>
+          </div>
+
+          <div class="d-grid">
+            <%= f.submit "ログイン", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+
+        <div class="text-center mt-3">
+          <p class="mb-0">
+            アカウントをお持ちでない方は
+            <%= link_to "こちら", new_user_path, class: "text-decoration-none" %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
