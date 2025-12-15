@@ -17,4 +17,12 @@ class ApplicationController < ActionController::Base
       redirect_to new_session_path
     end
   end
+
+  # スタッフ権限が必要
+  def require_staff
+    unless current_user&.staff?
+      flash[:danger] = "この操作にはスタッフ権限が必要です"
+      redirect_to root_path
+    end
+  end
 end

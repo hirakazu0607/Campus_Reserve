@@ -1,0 +1,55 @@
+<%= form_with(model: reservation, local: true) do |form| %>
+  <% if reservation.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <h5 class="alert-heading">
+        <%= pluralize(reservation.errors.count, "error") %> prohibited this reservation from being saved:
+      </h5>
+      <ul class="mb-0">
+        <% reservation.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :facility_id, "施設", class: "form-label" %>
+    <%= form.collection_select :facility_id, @facilities, :id, :name,
+        { prompt: "施設を選択してください" },
+        { class: "form-select", required: true } %>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= form.label :start_time, "開始時刻", class: "form-label" %>
+      <%= form.datetime_local_field :start_time,
+          class: "form-control",
+          required: true,
+          value: (reservation.start_time&.strftime("%Y-%m-%dT%H:%M") || 1.day.from_now.change(hour: 10, min: 0).strftime("%Y-%m-%dT%H:%M")) %>
+      <small class="form-text text-muted">日付と時刻を選択してください</small>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= form.label :end_time, "終了時刻", class: "form-label" %>
+      <%= form.datetime_local_field :end_time,
+          class: "form-control",
+          required: true,
+          value: (reservation.end_time&.strftime("%Y-%m-%dT%H:%M") || 1.day.from_now.change(hour: 12, min: 0).strftime("%Y-%m-%dT%H:%M")) %>
+      <small class="form-text text-muted">日付と時刻を選択してください</small>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :purpose, "利用目的（任意）", class: "form-label" %>
+    <%= form.text_area :purpose,
+        class: "form-control",
+        rows: 4,
+        maxlength: 500,
+        placeholder: "予約の目的を入力してください..." %>
+    <small class="form-text text-muted">最大500文字</small>
+  </div>
+
+  <div class="d-grid gap-2">
+    <%= form.submit class: "btn btn-primary btn-lg" %>
+  </div>
+<% end %>

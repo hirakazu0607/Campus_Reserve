@@ -28,6 +28,9 @@ class User < ApplicationRecord
   # ロールは必須
   validates :role, presence: true
 
+  # アソシエーション
+  has_many :reservations, dependent: :destroy
+
   # メールアドレスを小文字で保存
   before_save :downcase_email
 
