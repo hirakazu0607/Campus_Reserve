@@ -14,7 +14,7 @@ class Reservation < ApplicationRecord
   # Custom validations
   validate :end_time_after_start_time
   validate :reservation_in_future
-  validate :no_time_overlap, on: :create
+  validate :no_time_overlap
 
   private
 
@@ -23,7 +23,7 @@ class Reservation < ApplicationRecord
     return if end_time.blank? || start_time.blank?
 
     if end_time <= start_time
-      errors.add(:end_time, "must be after start time")
+      errors.add(:end_time, "開始時刻より後に設定してください")
     end
   end
 
@@ -32,7 +32,7 @@ class Reservation < ApplicationRecord
     return if start_time.blank?
 
     if start_time < Time.current
-      errors.add(:start_time, "must be in the future")
+      errors.add(:start_time, "未来の日時を指定してください")
     end
   end
 
@@ -44,8 +44,11 @@ class Reservation < ApplicationRecord
                              .where.not(status: :cancelled)
                              .where("start_time < ? AND end_time > ?", end_time, start_time)
 
+    # 更新時は自分自身を除外
+    overlapping = overlapping.where.not(id: self.id) if self.id.present?
+
     if overlapping.exists?
-      errors.add(:base, "This time slot is already reserved")
+      errors.add(:base, "この時間帯はすでに予約されています")
     end
   end
 end
