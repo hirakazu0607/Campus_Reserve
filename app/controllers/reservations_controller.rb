@@ -51,7 +51,7 @@ class ReservationsController < ApplicationController
   def edit
     # Only pending reservations can be edited
     unless @reservation.pending?
-      redirect_to @reservation, alert: "承認待ちの予約のみ編集できま
+      redirect_to @reservation, alert: "承認待ちの予約のみ編集できます"
       return
     end
     @facilities = Facility.all
