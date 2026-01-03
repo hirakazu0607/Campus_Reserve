@@ -6,7 +6,7 @@ gem "rails", "~> 8.1.1"
 gem "propshaft"
 # Use mysql2 for development/test, pg for production
 gem "mysql2", ">= 0.5.3", group: [:development, :test]
-gem "pg", "~> 1.5", group: :production
+gem "pg", "~> 1.6", group: :production
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
